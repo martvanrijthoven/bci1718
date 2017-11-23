@@ -6,9 +6,9 @@ import time
 import os
 try:     pydir=os.path.dirname(__file__)
 except:  pydir=os.getcwd()    
-sys.path.append(os.path.join(os.path.abspath(pydir),'../../dataAcq/buffer/python'))
+sys.path.append(os.path.join(os.path.abspath(pydir),'../dataAcq/buffer/python'))
 import FieldTrip
-sys.path.append(os.path.join(os.path.abspath(pydir),'../../python/signalProc'))
+sys.path.append(os.path.join(os.path.abspath(pydir),'../python/signalProc'))
 import bufhelp
 import math
 import random
