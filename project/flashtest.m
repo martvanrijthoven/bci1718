@@ -1,5 +1,15 @@
 
-figure
+screensize = get(0,'ScreenSize');
+screensize = screensize(3:4);
+
+leftx = 0;
+rightx = screensize(1)/3;
+
+
+f = figure('Position',[leftx,0,rightx,screensize(1)]);
+set(f, 'MenuBar', 'none');
+set(f, 'ToolBar', 'none');
+
 
 % the flashing block on frequency
 t = timer;
@@ -10,16 +20,17 @@ set(t, 'Period', 1/freq);
 set(t, 'TimerFcn', 'show');
 flash = true;
 
-RectPos = [0,0,1,1];
+RectPos = [2,4,6,3];
 
 %// Set the visible property to off.
-    show = rectangle('Position',RectPos,'FaceColor','w','Visible','off');
-    hide = rectangle('Position',RectPos,'FaceColor','k','Visible','off');
-
+show = rectangle('Position',RectPos,'FaceColor', [0.8, 0.8, 0.8], 'Visible','off');
+hide = rectangle('Position',RectPos,'FaceColor','k','Visible','off');
+axis([0 10 0 10])
 % set the background to black
 set (gcf, 'Color', [0 0 0] );
+set (gca, 'Color', [0 0 0] );
 
-while true;
+while true
 
 %// Play with the "Visible" property to show/hide the rectangles.
     set(show,'Visible','on')
