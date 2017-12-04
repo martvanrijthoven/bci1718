@@ -7,8 +7,8 @@ blablabla text etc.
 ### Schedule
 | Week | Task |
 | --- | --- |
-| 20-11 | Come up with topic, develop experimental design |
-| 27-11 | Start implementation of experimental design, start literature survey |
+| ~~20-11~~ | ~~Come up with topic, develop experimental design~~ |
+| ~~27-11~~ | ~~Start implementation of experimental design, start literature survey~~ |
 | 02-12 | Finalize experimental design, 1st pilot test |
 | 11-12 | Analyze 1st pilot test results, revise experimental design based on results |
 | 18-12 | Holidays |
