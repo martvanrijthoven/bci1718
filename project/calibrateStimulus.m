@@ -26,7 +26,7 @@ verb=0;
 nSymbs=2;
 nSeq=15;
 nBlock=2;%10; % number of stim blocks to use
-trialDuration=3;
+trialDuration=1;
 baselineDuration=1;
 intertrialDuration=2;
 
