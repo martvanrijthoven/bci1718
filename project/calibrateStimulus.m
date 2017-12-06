@@ -48,9 +48,9 @@ ax=axes('position',[0.025 0.025 .95 .95],'units','normalized','visible','off','b
         'color',[0 0 0],'DrawMode','fast','nextplot','replacechildren',...
         'xlim',[-1.5 1.5],'ylim',[-1.5 1.5],'Ydir','normal');
 right=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middle',...
-       'FontUnits','normalized','fontsize',.2,'color',[1 1 0],'visible','off'); 
+       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off'); 
 left=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middle',...
-       'FontUnits','normalized','fontsize',.2,'color',[0 0 1],'visible','off'); 
+       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off'); 
 set(right, 'string', '>');
 set(left, 'string', '<');
    
