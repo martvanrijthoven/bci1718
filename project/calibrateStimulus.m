@@ -18,6 +18,19 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
   pause(1);
 end;
 
+
+screensize = get(0,'ScreenSize');
+screensize = screensize(3:4);
+
+leftx = screensize(1)/3;
+rightx = screensize(1)/3;
+
+
+f = figure('Position',[leftx,0,rightx,screensize(1)]);
+set(f, 'MenuBar', 'none');
+set(f, 'ToolBar', 'none');
+
+
 % set the real-time-clock to use
 initsleepSec;
 initgetwTime;
@@ -68,6 +81,10 @@ set(right, 'position', [0;0]);
 set(left, 'position', [0;0]);
 sendEvent('stimulus.training','start');
 drawnow; pause(5); % N.B. pause so fig redraws
+
+% !! os specific !!
+!/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
+!/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
 
 for si=1:nSeq;
 
