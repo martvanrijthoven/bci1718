@@ -1,3 +1,6 @@
+% CHANGE TO CURRENT OS BEFORE RUNNING
+OS = 'windows';
+
 try; cd(fileparts(mfilename('fullpath')));catch; end;
 try;
    run ../matlab/utilities/initPaths.m
@@ -83,8 +86,13 @@ sendEvent('stimulus.training','start');
 drawnow; pause(5); % N.B. pause so fig redraws
 
 % !! os specific !!
-!/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
-!/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
+if strcmp(OS, 'macos')
+    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
+    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
+elseif strcmp(OS, 'windows')
+    !matlab -r run('flashtest.m') &
+    !matlab -r run('flashtestr.m') &
+end
 
 for si=1:nSeq;
 
