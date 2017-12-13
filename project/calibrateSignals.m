@@ -19,13 +19,13 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
 end;
 
 trialDuration=1;
-tau = .14;
+tau_ms = 140;
 trlen_ms=trialDuration*1000;
 dname  ='training_data';
 cname  ='clsfr';
 
 % Grab 600ms data after every stimulus.target event
-[data,devents,state]=buffer_waitData(buffhost,buffport,[],'startSet',{'stimulus.target'},'exitSet',{'stimulus.training' 'end'},'offset_ms', tau, 'trlen_ms',trlen_ms);
+[data,devents,state]=buffer_waitData(buffhost,buffport,[],'startSet',{'stimulus.target'},'exitSet',{'stimulus.training' 'end'},'offset_ms', tau_ms, 'trlen_ms',trlen_ms);
 mi=matchEvents(devents,'stimulus.training','end'); devents(mi)=[]; data(mi)=[]; % remove the exit event
 fprintf('Saving %d epochs to : %s\n',numel(devents),dname);
 save(dname,'data','devents');
