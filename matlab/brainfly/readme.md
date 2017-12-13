@@ -39,6 +39,24 @@ Data is saved to the default output folder: C:\output\test\&lt;YYMMDD&gt;\&lt;HH
 1. Start the signal processing module by running: buffer\_bci/matlab/brainfly/startSigProcBuffer.bat. This should start another session of Matlab/Octave and will ask you to select a cap file. For a 10-electrode configuration suited for imagined movement select cap\_tmsi\_mobita\_im.txt.
 2. Start the experiment by running:buffer\_bci/matlab/bki323/runBrainfly.bat
 
+## Starting the BCI Practical project
+
+1. Before each experiment, check if you are on the most recent version of the bki323 branch of the buffer\_bci code. The PCs are also being used by other students who may have made local changes to the code or switched branches. To switch to the correct branch, use: git checkout bki323
+2. Make sure the experiment code is configured for the correct condition. Each group is assigned one of the two experimental conditions (see Blackboard for a list).
+  1. Open the configuration file buffer\_bci/matlab/brainfly/configureProject.m
+3. Connect to the Mobita (for a reminder of how to set up the Mobita see buffer\_bci/doc/Mobita\_manual.md)
+4. Start the EEG data-acquisition, by running:
+
+buffer\_bci/dataAcq/startJavaBuffer.batand buffer\_bci/dataAcq/startMobita.bat_._
+
+Data is saved to the default output folder: C:\output\test\&lt;YYMMDD&gt;\&lt;HHMM&gt;\raw\_buffer\0001
+
+| Make a note of the name of the directory where the data is saved (so write down the date and timestamp). Multiple groups are using the PCs on the same day, so there will be several directories with the same date stamp. You need to know which of these contains the data of **your** group! |
+| --- |
+
+1. Start the signal processing module by running: buffer\_bci/matlab/brainfly/startSigProcBufferProject.bat. This should start another session of Matlab/Octave and will ask you to select a cap file. For a 10-electrode configuration suited for imagined movement select cap\_tmsi\_mobita\_im.txt.
+2. Start the experiment by running:buffer\_bci/matlab/bki323/runProject.bat
+
 ## Capfitting
 
 In the control window, select option **0) EEG** to open the EEG signal viewer. Place electrodes in the cap and check signal quality. A short reminder: aim for a signal amplitude of no more than +/- 20 µV in the time domain and check the signal for big artefacts such as 50 Hz noise or heartbeats. Refer to the instructions of the EEG tutorial session (buffer\_bci/tutorial/EEGBCITutorial/EEGBCI\_worksheet.pdf) for additional information.
