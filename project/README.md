@@ -16,3 +16,9 @@ blablabla text etc.
 | 15-01 | Final data gathering |
 | 22-01 | Final presentation and demonstration |
 | 05-02 | Final report |
+
+### TO-DO
+1. Check whether training of the classifier really works with continuous feedback (whether a prediction is sent)
+2. Fix that the matlab instances quit themself
+3. Make sure the data is not overwritten every time the project is started
+4. Introduce the flashing rectangles in Brainfly
