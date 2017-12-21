@@ -90,8 +90,8 @@ if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
 elseif strcmp(OS, 'windows')
-    !matlab -r run('flashtest.m') &
-    !matlab -r run('flashtestr.m') &
+    !matlab -r run('flashtest.m') -nodesktop -minimize &
+    !matlab -r run('flashtestr.m') -nodesktop -minimize &
 end
 
 for si=1:nSeq;
