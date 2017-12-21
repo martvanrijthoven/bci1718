@@ -1,6 +1,26 @@
 % CHANGE TO CURRENT OS BEFORE RUNNING
 OS = 'windows';
 
+try; cd(fileparts(mfilename('fullpath')));catch; end;
+try;
+   run ../matlab/utilities/initPaths.m
+catch
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
+end
+
+buffhost='localhost';buffport=1972;
+% wait for the buffer to return valid header information
+hdr=[];
+while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffer to contain valid data
+  try 
+    hdr=buffer('get_hdr',[],buffhost,buffport); 
+  catch
+    hdr=[];
+    fprintf('Invalid header info... waiting.\n');
+  end;
+  pause(1);
+end;
+
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
@@ -72,18 +92,19 @@ if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
 elseif strcmp(OS, 'windows')
-    !matlab -r run('flashtest.m') &
-    !matlab -r run('flashtestr.m') &
+    !matlab -r run('flashtest.m') -nodesktop -minimize &
+    !matlab -r run('flashtestr.m') -nodesktop -minimize &
 end
-
 
 % play the stimulus
 % reset the cue and fixation point to indicate trial has finished  
 set(h(:),'facecolor',bgColor);
 
 % wait for user to become ready
-set(txthdl,'string', {contfeedback_instruct{:} '' 'Click mouse when ready'}, 'visible', 'on'); drawnow;
+a=text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'Focus on the flickering rectangle on the side of the green circle.', 'The red middle circle indicates the current prediction', '', 'click here if ready'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
 waitforbuttonpress;
+set(a, 'visible', 'off');
+sendEvent('experiment','start');
 set(txthdl,'visible', 'off'); drawnow; sleepSec(intertrialDuration);
 
 sendEvent('stimulus.testing','start');

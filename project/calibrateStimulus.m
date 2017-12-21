@@ -96,7 +96,8 @@ elseif strcmp(OS, 'windows')
     !matlab -r run('flashtestr.m') -nodesktop -minimize &
 end
 
-a= text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'click'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.1);
+% instruction
+a= text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
 waitforbuttonpress();
 sendEvent('experiment','start');
 set(a,'visible','off');
@@ -148,5 +149,5 @@ end % sequences
 sendEvent('stimulus.training','end');
 
 % thanks message
-text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'That ends the training phase.','Thanks for your patience'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.1);
+text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'That ends the training phase.','Thanks for your patience'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.03);
 pause(3);
