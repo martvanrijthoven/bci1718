@@ -20,9 +20,6 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
   pause(1);
 end;
 
-buffer_newevents(buffhost, buffport, [], {'experiment'}, {'start'}, 10000);
-
-
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
@@ -53,6 +50,18 @@ axis([0 10 0 10])
 % set the background to black
 set (gcf, 'Color', [0 0 0] );
 set (gca, 'Color', [0 0 0] );
+
+drawnow;
+start = 0
+while start == 0
+    print = "loop"
+    start = 1
+    msg = buffer_newevents(buffhost, buffport, [], {'experiment'}, {'start'}, 1000)
+    if isempty(msg)
+        start = 0
+    end
+    print = "after"
+end
 
 while true
 

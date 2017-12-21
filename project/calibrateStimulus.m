@@ -70,13 +70,6 @@ left=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middl
 set(right, 'string', '>');
 set(left, 'string', '<');
    
-a= text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'click'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.1);
-waitforbuttonpress();
-sendEvent('experiment','start');
-set(a,'visible','off');
-drawnow;
-
-
 stimRadius=.5;
 theta=linspace(0,pi,nSymbs);
 % add symbol for the center of the screen
@@ -99,9 +92,16 @@ if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
 elseif strcmp(OS, 'windows')
-    !matlab -r run('flashtest.m') &
-    !matlab -r run('flashtestr.m') &
+    !matlab -r run('flashtest.m') -nodesktop -minimize &
+    !matlab -r run('flashtestr.m') -nodesktop -minimize &
 end
+
+a= text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'click'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.1);
+waitforbuttonpress();
+sendEvent('experiment','start');
+set(a,'visible','off');
+drawnow;
+
 
 for si=1:nSeq;
 
