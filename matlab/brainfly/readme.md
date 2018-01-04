@@ -47,7 +47,7 @@ Data is saved to the default output folder: C:\output\test\&lt;YYMMDD&gt;\&lt;HH
 3. Connect to the Mobita (for a reminder of how to set up the Mobita see buffer\_bci/doc/Mobita\_manual.md)
 4. Start the EEG data-acquisition, by running:
 
-buffer\_bci/dataAcq/startJavaBuffer.batand buffer\_bci/dataAcq/startMobita.bat_._
+buffer\_bci/dataAcq/startJavaBuffer.bat and buffer\_bci/dataAcq/startMobita.bat_._
 
 Data is saved to the default output folder: C:\output\test\&lt;YYMMDD&gt;\&lt;HHMM&gt;\raw\_buffer\0001
 
