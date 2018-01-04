@@ -69,6 +69,8 @@ left=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middl
        'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off'); 
 set(right, 'string', '>');
 set(left, 'string', '<');
+instruction=text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),'Wait ...','HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
+
    
 stimRadius=.5;
 theta=linspace(0,pi,nSymbs);
@@ -79,7 +81,7 @@ set(gca,'visible','on');
 
 % play the stimulus
 % reset the cue and fixation point to indicate trial has finished  
-set(h,'facecolor',bgColor);
+set(h,'facecolor',bgColor,'visible','off');
 set(right, 'position', [0;0]);
 set(left, 'position', [0;0]);
 sendEvent('stimulus.training','start');
@@ -89,18 +91,24 @@ drawnow; pause(5); % N.B. pause so fig redraws
 
 % !! os specific !!
 if strcmp(OS, 'macos')
-    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtest.m" &
-    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashtestr.m" &
+    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashLeftTrain.m" &
+    !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashRightTrain.m" &
 elseif strcmp(OS, 'windows')
-    !matlab -r run('flashtest.m') -nodesktop -minimize &
-    !matlab -r run('flashtestr.m') -nodesktop -minimize &
+    !matlab -r run('flashLeftTrain') -nodesktop -minimize &
+    !matlab -r run('flashRightTrain') -nodesktop -minimize &
+end
+
+msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
+if not(isempty(msg))
+    set(instruction, 'string', {'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'});
+    drawnow;
 end
 
 % instruction
-a= text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
 waitforbuttonpress();
 sendEvent('experiment','start');
-set(a,'visible','off');
+set(instruction,'visible','off');
+set(h,'visible','on');
 drawnow;
 
 
@@ -145,9 +153,12 @@ for si=1:nSeq;
   
   fprintf('\n');
 end % sequences
+pause(1); % wait a sec for the flashes to finish
+
 % end training marker
 sendEvent('stimulus.training','end');
 
 % thanks message
 text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),{'That ends the training phase.','Thanks for your patience'},'HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.03);
 pause(3);
+close(clf);
