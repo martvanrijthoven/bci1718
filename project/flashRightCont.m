@@ -1,3 +1,5 @@
+trialduration=10;
+
 % connect part
 
 try; cd(fileparts(mfilename('fullpath')));catch; end;
@@ -23,7 +25,7 @@ end;
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
-leftx = 0;
+leftx = screensize(1)/3*2;
 rightx = screensize(1)/3;
 
 
@@ -35,11 +37,11 @@ set(f, 'ToolBar', 'none');
 % the flashing block on frequency
 t = timer;
 set(t, 'executionMode', 'fixedRate');
-freq = 10;
+freq = 15;
 period = 1/freq;
 set(t, 'Period', 1/freq);
 set(t, 'TimerFcn', 'show');
-flash = true;
+flash = 0;
 
 RectPos = [2,4,6,3];
 
@@ -52,34 +54,46 @@ set (gcf, 'Color', [0 0 0] );
 set (gca, 'Color', [0 0 0] );
 
 drawnow;
-start = 0
-while start == 0
-    print = "loop"
-    start = 1
-    msg = buffer_newevents(buffhost, buffport, [], {'experiment'}, {'start'}, 1000)
-    if isempty(msg)
-        start = 0
+go=1;
+flash = 0;
+
+sendEvent('stimulus.flash','ready');
+while go
+    drawnow;
+    % check whether trial starts or training ends
+    msg = buffer_newevents(buffhost, buffport, [], {'stimulus.trial','stimulus.testing'}, {'start','end'}, 1000);
+    if not(isempty(msg))
+        if and(strcmp(msg.type, 'stimulus.trial'), strcmp(msg.value, 'start'))
+            flash = 1;
+        elseif and(strcmp(msg.type, 'stimulus.testing'), strcmp(msg.value, 'end'))
+            go = 0;
+        end
     end
-    print = "after"
+    tic;
+    while flash
+
+    %// Play with the "Visible" property to show/hide the rectangles.
+        set(show,'Visible','on')
+
+        pause(period)
+
+        set(show,'Visible','off')
+        set(hide,'Visible','on');
+        drawnow
+
+        pause(period)
+
+        set(hide,'Visible','off');
+
+        set(gca,'xcolor',get(gcf,'color'));
+        set(gca,'ycolor',get(gcf,'color'));
+        set(gca,'ytick',[]);
+        set(gca,'xtick',[]);
+        
+        elapsed=toc;
+        if elapsed>trialduration
+            flash=0;
+        end
+    end
 end
-
-while true
-
-%// Play with the "Visible" property to show/hide the rectangles.
-    set(show,'Visible','on')
-
-    pause(period)
-
-    set(show,'Visible','off')
-    set(hide,'Visible','on');
-    drawnow
-
-    pause(period)
-
-    set(hide,'Visible','off');
-
-    set(gca,'xcolor',get(gcf,'color'));
-    set(gca,'ycolor',get(gcf,'color'));
-    set(gca,'ytick',[]);
-    set(gca,'xtick',[]);
-end
+close(clf);quit;
