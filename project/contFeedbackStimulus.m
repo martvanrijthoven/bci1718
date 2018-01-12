@@ -348,3 +348,4 @@ if ( ishandle(fig) ) % thanks message
 set(txthdl,'string',{'That ends the feedback phase.','Thanks for your patience'},'color',[0 1 0],'visible', 'on');
 pause(3);
 end
+close(clf);

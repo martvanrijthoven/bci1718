@@ -105,18 +105,9 @@ if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run ../../project/flashLeftBrainFly.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run ../../project/flashRightBrainFly.m" &
 elseif strcmp(OS, 'windows')
-    !matlab -r run('flashLeftBrainFly.m') -nodesktop -minimize &
-    !matlab -r run('flashRightBrainFly.m') -nodesktop -minimize &
+    !matlab -r run('../../project/flashLeftBrainFly.m') -nodesktop -minimize &
+    !matlab -r run('../../project/flashRightBrainFly.m') -nodesktop -minimize &
 end
-
-msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
-if not(isempty(msg))
-    "done wait.."
-end
-
-
-
-
 
 %% Game Loop:
                                 % Set callbacks to manage the key presses:
@@ -151,14 +142,14 @@ hbonusAliens=[];
 hText = text(gameCanvasXLims(1),gameCanvasYLims(2),genTextStr(score,curBalls,cannonKills),...
              'HorizontalAlignment', 'left', 'VerticalAlignment','top','Color',txtColor);
 
-
+set(hText,'string', {'' 'Wait ...'}, 'visible', 'on'); drawnow;
+msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
+if not(isempty(msg))
+    "done wait.."
+end
                        % wait for user to be ready before starting everything
 set(hText,'string', {'' 'Click mouse when ready to begin.'}, 'visible', 'on'); drawnow;
 waitforbuttonpress;
-
-
-
-
 
 for i=0:5;
    set(hText,'string',sprintf('Starting in: %ds',5-i),'visible','on');drawnow;
@@ -385,3 +376,4 @@ while ( toc(t0)<gameDuration && ishandle(hFig))
     fprintf('%d) frame-lagged %gs\n',nframe,ttg);
   end
 end
+sendEvent('stimulus.brainfly', 'end');

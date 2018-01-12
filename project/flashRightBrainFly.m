@@ -1,3 +1,4 @@
+trialduration=10;
 
 % connect part
 
@@ -5,15 +6,15 @@ try; cd(fileparts(mfilename('fullpath')));catch; end;
 try;
    run ../matlab/utilities/initPaths.m
 catch
-   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory');
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
 end
 
 buffhost='localhost';buffport=1972;
 % wait for the buffer to return valid header information
 hdr=[];
 while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffer to contain valid data
-  try
-    hdr=buffer('get_hdr',[],buffhost,buffport);
+  try 
+    hdr=buffer('get_hdr',[],buffhost,buffport); 
   catch
     hdr=[];
     fprintf('Invalid header info... waiting.\n');
@@ -53,12 +54,29 @@ set (gcf, 'Color', [0 0 0] );
 set (gca, 'Color', [0 0 0] );
 
 drawnow;
-go=1;
-
+go=0;
+flash = 0;
 
 sendEvent('stimulus.flash','ready');
 
+% check whether trial starts or training ends
+msg = buffer_newevents(buffhost, buffport, [], {'stimulus.game'}, {'start'}, 60000);
+if not(isempty(msg))
+    if and(strcmp(msg.type, 'stimulus.game'), strcmp(msg.value, 'start'))
+        go = 1;
+    end
+end
+
 while go
+    drawnow;
+    % check whether trial starts or training ends
+    msg = buffer_newevents(buffhost, buffport, [], {'stimulus.brainfly'}, {'end'}, 1);
+    if not(isempty(msg))
+        if and(strcmp(msg.type, 'stimulus.brainfly'), strcmp(msg.value, 'end'))
+            go = 0;
+        end
+    end
+    
     %// Play with the "Visible" property to show/hide the rectangles.
     set(show,'Visible','on')
 

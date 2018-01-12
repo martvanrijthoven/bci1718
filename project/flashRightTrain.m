@@ -1,4 +1,4 @@
-trialduration=1;
+trialduration=2;
 
 % connect part
 
@@ -61,7 +61,7 @@ sendEvent('stimulus.flash','ready');
 while go
     drawnow;
     % check whether trial starts or training ends
-    msg = buffer_newevents(buffhost, buffport, [], {'stimulus.trial','stimulus.training'}, {'start','end'}, 1000);
+    msg = buffer_newevents(buffhost, buffport, [], {'stimulus.trial','stimulus.training'}, {'start','end'}, 10000);
     if not(isempty(msg))
         if strcmp(msg.type, 'stimulus.trial')
             flash = 1;
