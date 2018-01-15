@@ -98,7 +98,7 @@ tgtSeq=mkStimSeqRand(2,gameDuration*2./timeBeforeNextAlien);
 lrSeq =(tgtSeq(1,:)*.7+.15)+(rand(1,size(tgtSeq,2))-.5)*.1; % l/r with a little noise
 
 
-"wait..."
+'wait...'
 
 % !! os specific !!
 if strcmp(OS, 'macos')
@@ -145,7 +145,7 @@ hText = text(gameCanvasXLims(1),gameCanvasYLims(2),genTextStr(score,curBalls,can
 set(hText,'string', {'' 'Wait ...'}, 'visible', 'on'); drawnow;
 msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
 if not(isempty(msg))
-    "done wait.."
+    'done wait..'
 end
                        % wait for user to be ready before starting everything
 set(hText,'string', {'' 'Click mouse when ready to begin.'}, 'visible', 'on'); drawnow;
