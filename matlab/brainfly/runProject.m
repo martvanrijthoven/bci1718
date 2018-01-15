@@ -116,6 +116,7 @@ while (ishandle(contFig))
     try
       preConfigured=true;      
       calibrateStimulus;
+      try; cd(fileparts(mfilename('fullpath')));catch; end;
       preConfigured=false;
     catch
        le=lasterror;fprintf('ERROR Caught:\n %s\n%s\n',le.identifier,le.message);
@@ -162,6 +163,7 @@ while (ishandle(contFig))
       sendEvent('startPhase.cmd','contfeedback');
       preConfigured=true;
       contFeedbackStimulus;
+      try; cd(fileparts(mfilename('fullpath')));catch; end;
       preConfigured=false;
     catch
        le=lasterror;fprintf('ERROR Caught:\n %s\n%s\n',le.identifier,le.message);
