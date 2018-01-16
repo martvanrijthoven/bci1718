@@ -1,0 +1,1 @@
+load '.\data\SSVEP_8Hz_Trial1_SUBJ1.MAT'
