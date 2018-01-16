@@ -20,7 +20,7 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
 end;
 
 % Constants
-capFile='cap_tmsi_mobita_im.txt';
+capFile='cap_project.txt';
 overridechnm=1; % capFile channel names override those from the header!
 dname  ='training_data';
 cname  ='clsfr';
