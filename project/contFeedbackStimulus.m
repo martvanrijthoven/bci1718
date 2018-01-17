@@ -87,6 +87,7 @@ progresshdl=text(axLim(1),axLim(2),sprintf('%2d/%2d +%02d -%02d (%02d)',0,nSeq,0
 
 
 % !! os specific !!
+%{
 if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashLeftCont.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashRightCont.m" &
@@ -94,6 +95,7 @@ elseif strcmp(OS, 'windows')
     !matlab -r run('flashLeftCont.m') -nodesktop -minimize &
     !matlab -r run('flashRightCont.m') -nodesktop -minimize &
 end
+%}
 
 % play the stimulus
 % reset the cue and fixation point to indicate trial has finished  
@@ -102,11 +104,15 @@ set(h(:),'facecolor',bgColor);
 % wait for user to become ready
 instruction=text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),'Wait ...','HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
 drawnow;
+%{
 msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
 if not(isempty(msg))
     set(instruction, 'string', {'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'});
     drawnow;
 end
+%}
+set(instruction, 'string', {'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'});
+drawnow;
 waitforbuttonpress;
 set(instruction, 'visible', 'off');
 sendEvent('experiment','start');

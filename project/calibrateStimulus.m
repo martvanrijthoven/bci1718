@@ -42,7 +42,7 @@ verb=0;
 nSymbs=2;
 nSeq=15;
 nBlock=2;%10; % number of stim blocks to use
-trialDuration=2;
+trialDuration=4;
 baselineDuration=1;
 intertrialDuration=2;
 
@@ -90,6 +90,7 @@ drawnow; pause(5); % N.B. pause so fig redraws
 
 
 % !! os specific !!
+%{
 if strcmp(OS, 'macos')
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashLeftTrain.m" &
     !/Applications/MATLAB_R2017a.app/bin/matlab -r "run flashRightTrain.m" &
@@ -97,12 +98,17 @@ elseif strcmp(OS, 'windows')
     !matlab -r run('flashLeftTrain') -nodesktop -minimize &
     !matlab -r run('flashRightTrain') -nodesktop -minimize &
 end
+%}
 
+%{
 msg = buffer_newevents(buffhost, buffport, [], {'stimulus.flash'}, {'ready'}, 60000);
 if not(isempty(msg))
     set(instruction, 'string', {'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'});
     drawnow;
 end
+%}
+set(instruction, 'string', {'Instruction', '', 'Focus on the grey circle in the middle of the screen.','The circle will turn red to indicate something is about to happen.', 'An arrow pointing to either right or left will appear.','Focus on the flickering plane at that side.', 'Re-focus on the grey circle in the middle of the screen when it re-appears.', '', 'click here if ready'});
+drawnow;
 
 % instruction
 waitforbuttonpress();

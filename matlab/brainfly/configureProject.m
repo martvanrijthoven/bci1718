@@ -117,7 +117,7 @@ dvCalFactor='auto'; % auto-scale the continuous feedback size
 %----------------------------------------------------------------------------------------------
 % signal-processing configuration
 freqband      =[6 8 17 19];
-trialDurationSeconds=2;
+trialDurationSeconds=4;
 tau_ms = 140;
 trlen_ms=trialDurationSeconds*1000;
 calibrateOpts ={};
