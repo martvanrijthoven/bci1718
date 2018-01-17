@@ -56,7 +56,7 @@ try
     myScreen = max(Screen('Screens'));
     %Priority(0);
     %myScreen = 2;
-    [win,winRect] =   Screen(myScreen,'OpenWindow',[],[0 0 900 900]);
+    [win,winRect] =   Screen(myScreen,'OpenWindow',[],[0 0 1920 1080]);
         
     [width, height] = RectSize(winRect);
     
