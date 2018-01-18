@@ -21,12 +21,13 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
   pause(1);
 end;
 
-
+%{
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
 leftx = screensize(1)/3;
 rightx = screensize(1)/3;
+%}
 
 if ( ~exist('preConfigured','var') || ~isequal(preConfigured,true) )  configureGame; end
 

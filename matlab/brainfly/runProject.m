@@ -115,7 +115,7 @@ while (ishandle(contFig))
     sendEvent(phaseToRun,'start');
     try
       preConfigured=true;      
-      calibrateStimulus;
+      calibrateStimulus_ori;
       try; cd(fileparts(mfilename('fullpath')));catch; end;
       preConfigured=false;
     catch
@@ -162,7 +162,7 @@ while (ishandle(contFig))
     try
       sendEvent('startPhase.cmd','contfeedback');
       preConfigured=true;
-      contFeedbackStimulus;
+      contFeedbackStimulus_ori;
       try; cd(fileparts(mfilename('fullpath')));catch; end;
       preConfigured=false;
     catch
@@ -227,7 +227,7 @@ while (ishandle(contFig))
     sendEvent(phaseToRun,'start');
     try
       sendEvent('startPhase.cmd','contfeedback');
-      brainfly;
+      brainfly_ori;
     catch
        le=lasterror;fprintf('ERROR Caught:\n %s\n%s\n',le.identifier,le.message);
 	  	 if ( ~isempty(le.stack) )
