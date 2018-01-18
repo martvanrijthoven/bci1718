@@ -116,7 +116,13 @@ dvCalFactor='auto'; % auto-scale the continuous feedback size
 
 %----------------------------------------------------------------------------------------------
 % signal-processing configuration
-freqband      =[6 8 17 19];
+% for 10Hz and 15Hz
+% freqband      =[6 8 17 19];
+% for 15Hz and 20Hz
+% freqband      =[11 13 22 24];
+% for 10Hz and 20Hz
+% freqband      =[6 8 22 24];
+freqband      =[6 8 22 24];
 trialDurationSeconds=4;
 tau_ms = 140;
 trlen_ms=trialDurationSeconds*1000;
