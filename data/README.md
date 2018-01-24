@@ -20,3 +20,6 @@ clsfr_test_YYMMDD.mat
 - Files without LR are unknown
 - Files with LR are correct
 - Interchanged is labels are interchanged, such that they are correct afterwards
+
+##### 180124
+Everything is correct
