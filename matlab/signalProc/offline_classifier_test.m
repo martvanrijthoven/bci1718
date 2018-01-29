@@ -1,3 +1,10 @@
+try; cd(fileparts(mfilename('fullpath')));catch; end;
+try;
+   run ../../matlab/utilities/initPaths.m
+catch
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
+end
+
 util_folder = '../utilities';
 addpath(fullfile(util_folder));
 load '../../data/training_data_test_180117_Emiel1015.mat'
