@@ -1,8 +1,8 @@
 # Project for the course Brain-Computer Interface Practical
-This project uses a fork of: https://github.com/jadref/buffer_bci
 
-it uses code from https://github.com/taro10h/flicker_stimulator which uses Psychtoolbox for presenting stimuli.
-This repository also contains code from https://github.com/bibliolytic/MTlearning. This code has only be used for experimenting but is not used in final experiments and presented results.
+- This project uses a fork of: https://github.com/jadref/buffer_bci
+- This project uses code from https://github.com/taro10h/flicker_stimulator which uses Psychtoolbox for presenting stimuli.
+- This repository also contains code from https://github.com/bibliolytic/MTlearning. This code has only be used for experimenting but is not used in final experiments and presented results.
 
 By Thirza Dado, Mart van Rijthoven & Emiel Stoelinga
 
