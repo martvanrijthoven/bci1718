@@ -6,15 +6,15 @@ try; cd(fileparts(mfilename('fullpath')));catch; end;
 try;
    run ../matlab/utilities/initPaths.m
 catch
-   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory');
 end
 
 buffhost='localhost';buffport=1972;
 % wait for the buffer to return valid header information
 hdr=[];
 while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffer to contain valid data
-  try 
-    hdr=buffer('get_hdr',[],buffhost,buffport); 
+  try
+    hdr=buffer('get_hdr',[],buffhost,buffport);
   catch
     hdr=[];
     fprintf('Invalid header info... waiting.\n');
@@ -22,13 +22,15 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
   pause(1);
 end;
 
+$ calculate screensize
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
+% calculate screenposition
 leftx = 0;
 rightx = screensize(1)/3;
 
-
+% set screenposition
 f = figure('Position',[leftx,0,rightx,screensize(1)]);
 set(f, 'MenuBar', 'none');
 set(f, 'ToolBar', 'none');
@@ -74,7 +76,7 @@ while go
             go = 0;
         end
     end
-    
+
     %// Play with the "Visible" property to show/hide the rectangles.
     set(show,'Visible','on')
 

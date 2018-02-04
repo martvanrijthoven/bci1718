@@ -5,15 +5,15 @@ try; cd(fileparts(mfilename('fullpath')));catch; end;
 try;
    run ../matlab/utilities/initPaths.m
 catch
-   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory');
 end
 
 buffhost='localhost';buffport=1972;
 % wait for the buffer to return valid header information
 hdr=[];
 while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffer to contain valid data
-  try 
-    hdr=buffer('get_hdr',[],buffhost,buffport); 
+  try
+    hdr=buffer('get_hdr',[],buffhost,buffport);
   catch
     hdr=[];
     fprintf('Invalid header info... waiting.\n');
@@ -21,14 +21,15 @@ while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffe
   pause(1);
 end;
 
-
+% calcuate screenssize
 screensize = get(0,'ScreenSize');
 screensize = screensize(3:4);
 
+% calculate screen position
 leftx = screensize(1)/3;
 rightx = screensize(1)/3;
 
-
+$ set screen position
 f = figure('Position',[leftx,0,rightx,screensize(1)]);
 set(f, 'MenuBar', 'none');
 set(f, 'ToolBar', 'none');
@@ -50,7 +51,6 @@ bgColor=[.5 .5 .5];
 tgtColor=[0 1 0];
 fixColor=[1 0 0];
 
-
 % make the target sequence
 tgtSeq=mkStimSeqRand(nSymbs,nSeq);
 
@@ -64,29 +64,29 @@ ax=axes('position',[0.025 0.025 .95 .95],'units','normalized','visible','off','b
         'color',[0 0 0],'DrawMode','fast','nextplot','replacechildren',...
         'xlim',[-1.5 1.5],'ylim',[-1.5 1.5],'Ydir','normal');
 right=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middle',...
-       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off'); 
+       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off');
 left=text(.5,.5,'text','HorizontalAlignment','center','VerticalAlignment','middle',...
-       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off'); 
+       'FontUnits','normalized','fontsize',.2,'color',tgtColor,'visible','off');
 set(right, 'string', '>');
 set(left, 'string', '<');
 instruction=text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),'Wait ...','HorizontalAlignment','center','color',[0 1 0],'fontunits','normalized','FontSize',.019);
 
-   
+
 stimRadius=.5;
 theta=linspace(0,pi,nSymbs);
+
 % add symbol for the center of the screen
 h=rectangle('curvature',[1 1],'position',[0-stimRadius/4;0-stimRadius/4;stimRadius/2*[1;1]],...
-                      'facecolor',bgColor); 
+                      'facecolor',bgColor);
 set(gca,'visible','on');
 
 % play the stimulus
-% reset the cue and fixation point to indicate trial has finished  
+% reset the cue and fixation point to indicate trial has finished
 set(h,'facecolor',bgColor,'visible','off');
 set(right, 'position', [0;0]);
 set(left, 'position', [0;0]);
 sendEvent('stimulus.training','start');
 drawnow; pause(5); % N.B. pause so fig redraws
-
 
 
 % !! os specific !!
@@ -129,8 +129,8 @@ for si=1:nSeq;
   sendEvent('stimulus.baseline','start');
   sleepSec(baselineDuration);
   sendEvent('stimulus.baseline','end');
-  
-  
+
+
   % show the target
   fprintf('%d) tgt=%d : ',si,find(tgtSeq(:,si)>0));
   set(h,'visible','off');
@@ -143,10 +143,12 @@ for si=1:nSeq;
   sendEvent('stimulus.target',find(tgtSeq(:,si)>0));
   drawnow;% expose; % N.B. needs a full drawnow for some reason
   sendEvent('stimulus.trial','start');
+
+
   % wait for trial end
   sleepSec(trialDuration);
-  
-  % reset the cue and fixation point to indicate trial has finished  
+
+  % reset the cue and fixation point to indicate trial has finished
   if tgt==1
       set(right, 'visible', 'off');
   elseif tgt==2
@@ -156,7 +158,7 @@ for si=1:nSeq;
   set(h,'visible','on');
   drawnow;
   sendEvent('stimulus.trial','end');
-  
+
   fprintf('\n');
 end % sequences
 pause(1); % wait a sec for the flashes to finish

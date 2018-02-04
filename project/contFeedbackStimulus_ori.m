@@ -5,15 +5,15 @@ try; cd(fileparts(mfilename('fullpath')));catch; end;
 try;
    run ../matlab/utilities/initPaths.m
 catch
-   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory'); 
+   msgbox({'Please change to the directory where this file is saved before running the rest of this code'},'Change directory');
 end
 
 buffhost='localhost';buffport=1972;
 % wait for the buffer to return valid header information
 hdr=[];
 while ( isempty(hdr) || ~isstruct(hdr) || (hdr.nchans==0) ) % wait for the buffer to contain valid data
-  try 
-    hdr=buffer('get_hdr',[],buffhost,buffport); 
+  try
+    hdr=buffer('get_hdr',[],buffhost,buffport);
   catch
     hdr=[];
     fprintf('Invalid header info... waiting.\n');
@@ -65,15 +65,17 @@ theta=linspace(0,2*pi,nSymbs+1);
 if ( mod(nSymbs,2)==1 ) theta=theta+pi/2; end; % ensure left-right symetric by making odd 0=up
 theta=theta(1:end-1);
 stimPos=[cos(theta);sin(theta)];
-for hi=1:nSymbs; 
+for hi=1:nSymbs;
   h(hi)=rectangle('curvature',[1 1],'position',[stimPos(:,hi)-stimRadius/2;stimRadius*[1;1]],...
-                  'facecolor',bgColor); 
-    
+                  'facecolor',bgColor);
+
 end;
+
+
 % add symbol for the center of the screen
 stimPos(:,nSymbs+1)=[0 0];
 h(nSymbs+1)=rectangle('curvature',[1 1],'position',[stimPos(:,end)-stimRadius/4;stimRadius/2*[1;1]],...
-                      'facecolor',bgColor); 
+                      'facecolor',bgColor);
 set(gca,'visible','off');
 
 %Create a text object with no text in it, center it, set font and color
@@ -81,12 +83,12 @@ txthdl = text(mean(get(ax,'xlim')),mean(get(ax,'ylim')),' ',...
 				  'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle',...
 				  'fontunits','pixel','fontsize',.05*wSize(4),...
 				  'color',txtColor,'visible','off');
+
 % text object for the experiment progress bar
 progresshdl=text(axLim(1),axLim(2),sprintf('%2d/%2d +%02d -%02d (%02d)',0,nSeq,0,0,0),...
 				  'HorizontalAlignment', 'left', 'VerticalAlignment', 'top',...
 				  'fontunits','pixel','fontsize',.05*wSize(4),...
 				  'color',txtColor,'visible','on');
-
 
 % !! os specific !!
 %{
@@ -100,7 +102,7 @@ end
 %}
 
 % play the stimulus
-% reset the cue and fixation point to indicate trial has finished  
+% reset the cue and fixation point to indicate trial has finished
 set(h(:),'facecolor',bgColor);
 
 % wait for user to become ready
@@ -128,17 +130,17 @@ waitforkeyTime=getwTime()+calibrateMaxSeqDuration;
 for si=1:nSeq;
 
   if ( ~ishandle(fig) ) break; end;
-    
+
   % Give user a break if too much time has passed
   if ( getwTime() > waitforkeyTime )
 	 set(txthdl,'string', {'Break between blocks.' 'Click mouse when ready to continue.'}, 'visible', 'on');
 	 drawnow;
 	 waitforbuttonpress;
 	 set(txthdl,'visible', 'off');
-	 drawnow;	 
+	 drawnow;
 	 waitforkeyTime=getwTime()+calibrateMaxSeqDuration;
 	 if ( 1.5*calibrateMaxSeqDuration > ...  % close to end of expt = don't bother
-			(nSeq-si)*(baselineDuration+contFeedbackTrialDuration+intertrialDuration) ) 
+			(nSeq-si)*(baselineDuration+contFeedbackTrialDuration+intertrialDuration) )
 		waitforkeyTime=inf;
 	 end;
 	 sleepSec(intertrialDuration);
@@ -188,7 +190,7 @@ for si=1:nSeq;
   drawnow;% expose; % N.B. needs a full drawnow for some reason
   sendEvent('stimulus.target',tgtNm);
   sendEvent('stimulus.trial','start');
-  
+
   %------------------------------- trial interval --------------
   % for the trial duration update the fixatation point in response to prediction events
   % initial fixation point position
@@ -198,7 +200,7 @@ for si=1:nSeq;
   prob   = ones(nSymbs,1)./nSymbs; % start with equal prob over everything
   trlStartTime=getwTime();
   timetogo = contFeedbackTrialDuration;
-  nevt=0; nPred=0; sdv=[]; baselinedv=[]; 
+  nevt=0; nPred=0; sdv=[]; baselinedv=[];
   evtTime=trlStartTime+epochDuration; % N.B. already sent the 1st target event
   while (timetogo>0)
 	 curTime  = getwTime();
@@ -211,7 +213,7 @@ for si=1:nSeq;
 	 end
     % wait for new prediction events to process *or* end of trial time
     [events,state,nsamples,nevents] = buffer_newevents(buffhost,buffport,state,'classifier.prediction',[],min([epochDuration,evtTime-curTime,timetogo])*1000);
-    if ( isempty(events) ) 
+    if ( isempty(events) )
 		if ( timetogo>.1 ) fprintf('%d) no predictions!\n',nsamples); end;
     else
 		[ans,evtsi]=sort([events.sample],'ascend'); % proc in *temporal* order
@@ -220,9 +222,9 @@ for si=1:nSeq;
 		  %fprintf('pred-evt=%s\n',ev2str(ev));
         pred=ev.value;
         % now do something with the prediction....
-        if ( numel(pred)==1 && isinteger(pred) && pred>0 && pred<=nSymbs ) 
+        if ( numel(pred)==1 && isinteger(pred) && pred>0 && pred<=nSymbs )
            tmp=pred; pred=zeros(nSymbs,1); pred(tmp)=1;
-        end    
+        end
 
 		  % additional prediction smoothing for display, if wanted
 		  if ( ~isempty(dvFilt) && ~isequal(dvFilt,0) )
@@ -247,15 +249,15 @@ for si=1:nSeq;
                            % accumulate info on the average dv for this trial
         nPred=nPred+1; if(isempty(sdv))sdv=dv; sdv2=dv.*dv; else; sdv=sdv+dv; sdv2=sdv2+dv.*dv; end;
         % update summary stats
-        if( isempty(dvstats) ) 
-           dvstats=struct('N',1,'sdv',dv,'sdv2',dv.*dv,'dvvar',1); 
-        else                   
-           dvstats.N    = dvstats.N+1; 
-           dvstats.sdv  = dvstats.sdv+dv; 
+        if( isempty(dvstats) )
+           dvstats=struct('N',1,'sdv',dv,'sdv2',dv.*dv,'dvvar',1);
+        else
+           dvstats.N    = dvstats.N+1;
+           dvstats.sdv  = dvstats.sdv+dv;
            dvstats.sdv2 = dvstats.sdv2+dv.*dv;
-           dvstats.dvvar= max(0,(dvstats.sdv2-dvstats.sdv.^2./dvstats.N))./dvstats.N; % running variance estimate 
+           dvstats.dvvar= max(0,(dvstats.sdv2-dvstats.sdv.^2./dvstats.N))./dvstats.N; % running variance estimate
         end
-        
+
 										  % convert from dv to normalised probability
         curdv=dv; if( numel(curdv)==1 ) curdv=[curdv -curdv]; end; % ensure min 1 decision values..
 		  if(~isempty(dvCalFactor))
@@ -267,22 +269,22 @@ for si=1:nSeq;
                  fprintf('N=%g sdv=[%s] sdv2=[%s] calF=[%g]\n',...
                          dvstats.N,sprintf('%g,',dvstats.sdv),sprintf('%g,',dvstats.sdv2),calF);
               end
-              if( calF>0 && ~isnan(calF) && ~isinf(calF) ) 
+              if( calF>0 && ~isnan(calF) && ~isinf(calF) )
                  prob=exp((curdv-max(curdv))*calF);
               end
            end
-		  else                      
+		  else
            prob=exp((curdv-max(curdv)));
 		  end
 		  prob=prob./sum(prob); % robust soft-max prob computation
-        if ( verb>=0 ) 
+        if ( verb>=0 )
 			 fprintf('%d) dv:[%s]\tPr:[%s]\n',ev.sample,sprintf('%5.4f ',pred),sprintf('%5.4f ',prob));
         end;
       end
 
 	 end % if prediction events to process
-    
-    
+
+
     % feedback information... simply move in direction detected by the BCI
 	 if ( numel(prob)>=size(stimPos,2)-1 ) % per-target decomposition
       if ( numel(prob)>size(stimPos,2) ) prob=[prob(1:size(stimPos,2)-1);sum(prob(size(stimPos,2):end))];end;
@@ -301,7 +303,7 @@ for si=1:nSeq;
 		fixPos=fixPos + dx*moveScale;
 	 end;
 	 set(h(end),'position',[fixPos-.5*cursorPos(3:4);cursorPos(3:4)]);
-    drawnow; % update the display after all events processed    
+    drawnow; % update the display after all events processed
   end % while time to go
 
 										  % turn off the text cue
@@ -317,7 +319,7 @@ for si=1:nSeq;
   end
 
 
-  % reset the cue and fixation point to indicate trial has finished  
+  % reset the cue and fixation point to indicate trial has finished
   set(h(:),'facecolor',bgColor);
   % show the predicted target
   set(h(min(numel(h),predTgt)),'facecolor',fbColor);
@@ -334,7 +336,7 @@ for si=1:nSeq;
 		if ( ischar(rtbClass) && strcmp(rtbClass,'trialClass') ) % label as part of the trial
 		  sendEvent('stimulus.target',tgtNm);
 		elseif ( ischar(rtbClass) && strcmp(rtbClass,'trialClass+rtb')) %return-to-base ver of trial class
-		  sendEvent('stimulus.target',[tgtNm '_rtb']);		
+		  sendEvent('stimulus.target',[tgtNm '_rtb']);
 		else
 		  sendEvent('stimulus.target',rtbClass);
 		end
@@ -343,7 +345,7 @@ for si=1:nSeq;
   else
     sleepSec(intertrialDuration);
   end
-  
+
   ftime=getwTime();
   fprintf('\n');
 end % loop over sequences in the experiment
